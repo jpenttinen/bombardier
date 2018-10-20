@@ -12,11 +12,10 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/codesenberg/bombardier/internal"
-
 	"github.com/cheggaaa/pb"
 	fhist "github.com/codesenberg/concurrent/float64/histogram"
 	uhist "github.com/codesenberg/concurrent/uint64/histogram"
+	"github.com/jpenttinen/bombardier/internal"
 	"github.com/satori/go.uuid"
 )
 

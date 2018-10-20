@@ -26,6 +26,7 @@ type kingpinParser struct {
 	timeout      time.Duration
 	latencies    bool
 	insecure     bool
+	tlsdebug     bool
 	method       string
 	body         string
 	bodyFilePath string
@@ -56,6 +57,7 @@ func newKingpinParser() argsParser {
 		certPath:     "",
 		keyPath:      "",
 		insecure:     false,
+		tlsdebug:     false,
 		url:          "",
 		rate:         new(nullableUint64),
 		clientType:   fhttp,
@@ -105,6 +107,12 @@ func newKingpinParser() argsParser {
 			" chain and host name").
 		Short('k').
 		BoolVar(&kparser.insecure)
+	app.Flag("tlsdebug",
+		"Controls whether client TLS session keys are stored to"+
+			" tls-secrets.txt.timestamp -file or not. Option requires"+
+			" that either --http1 or --http2 option is in use simultaneously.").
+		Short('D').
+		BoolVar(&kparser.tlsdebug)
 
 	app.Flag("header", "HTTP headers to use(can be repeated)").
 		PlaceHolder("\"K: V\"").
@@ -215,6 +223,7 @@ func (k *kingpinParser) parse(args []string) (config, error) {
 		certPath:       k.certPath,
 		printLatencies: k.latencies,
 		insecure:       k.insecure,
+		tlsdebug:       k.tlsdebug,
 		rate:           k.rate.val,
 		clientType:     k.clientType,
 		printIntro:     pi,
